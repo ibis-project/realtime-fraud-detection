@@ -1,6 +1,6 @@
 services:
   jobmanager:
-    image: flink:1.18.1
+    image: flink:1.19.1
     ports:
       - "8081:8081"
     command: jobmanager
@@ -63,7 +63,7 @@ services:
       - flink
 
   data-generator:
-    image: ibis-flink-data-generator
+    image: data-generator
     build:
       context: .
       dockerfile: data-generator.Dockerfile

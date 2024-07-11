@@ -1,4 +1,6 @@
-FROM flink:1.18.1
+ARG FLINK_VERSION=1.19.1
+
+FROM flink:${FLINK_VERSION}
 
 # install python3, pip3, and the JDK
 RUN \
@@ -10,4 +12,5 @@ ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk-arm64/"
 ENV PATH="${JAVA_HOME}:${PATH}"
 
 # install PyFlink and Ibis
-RUN pip3 install apache-flink==1.18.1 ibis-framework>=8
+ARG FLINK_VERSION
+RUN pip3 install apache-flink==${FLINK_VERSION} ibis-framework

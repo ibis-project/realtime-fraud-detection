@@ -1,0 +1,3 @@
+apache-flink==1.19.1
+ibis-framework
+kafka-python
