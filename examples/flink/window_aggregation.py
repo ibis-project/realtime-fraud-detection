@@ -42,7 +42,7 @@ source_schema = ibis.schema(
 
 source_configs = {
     "connector": "kafka",
-    "topic": "payment_msg",
+    "topic": "payment",
     "properties.bootstrap.servers": "localhost:9092" if local else "kafka:29092",
     "properties.group.id": "test_3",
     "scan.startup.mode": "earliest-offset",
@@ -50,7 +50,7 @@ source_configs = {
 }
 
 t = con.create_table(
-    "payment_msg",
+    "payment",
     schema=source_schema,
     tbl_properties=source_configs,
     watermark=ibis.watermark(

@@ -13,24 +13,50 @@ def write_data(producer):
     data_cnt = 20000
     order_id = calendar.timegm(time.gmtime())
     max_price = 100000
-    topic = "payment_msg"
+    payment_topic = "payment"
+    order_topic = "order"
 
-    print(f"Producing {data_cnt} records to Kafka topic {topic}")
+    print(
+        f"Producing {data_cnt} records to payment topic {payment_topic} and order topic {order_topic}"
+    )
     for _ in range(data_cnt):
+        # produce payment info to payment topic
         ts = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S.%f")[:-3]
         rd = random.random()
         order_id += 1
         pay_amount = max_price * rd
         pay_platform = 0 if random.random() < 0.9 else 1
         province_id = randint(0, 6)
-        cur_data = {
+        payment_data = {
             "createTime": ts,
             "orderId": order_id,
             "payAmount": pay_amount,
             "payPlatform": pay_platform,
             "provinceId": province_id,
         }
-        producer.send(topic, value=cur_data)
+        # produce order info to order topic
+        order_data = {
+            "createTime": ts,
+            "orderId": order_id,
+            "category": random.choice(
+                [
+                    "gas_transport",
+                    "grocery_pos",
+                    "home",
+                    "shopping_pos",
+                    "kids_pets",
+                    "personal_care",
+                    "health_fitness",
+                    "travel",
+                    "misc_pos",
+                    "food_dining",
+                    "entertainment",
+                ]
+            ),
+            "merchantId": randint(0, 1000),
+        }
+        producer.send(payment_topic, value=payment_data)
+        producer.send(order_topic, value=order_data)
         sleep(0.5)
 
 
